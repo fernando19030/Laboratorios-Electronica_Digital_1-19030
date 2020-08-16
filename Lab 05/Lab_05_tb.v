@@ -132,7 +132,7 @@ module testbench();
 
   initial begin
 
-    $dumpfile("Lab4_tb.vcd");
+    $dumpfile("Lab_05_tb.vcd");
     $dumpvars(0, testbench);
 
   end
