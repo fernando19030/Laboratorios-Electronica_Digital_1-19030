@@ -1,6 +1,6 @@
 //Ejercicio 1 Laboratorio 8 Electronica Digital 1
 
-module counter #(parameter N = 12) //Definimos vaeiables
+module counter #(parameter N = 12) //Definimos variables
                 (input wire clk, reset, en, load,
                  input wire [N-1:0] val,
                  output reg [N-1:0] q);
