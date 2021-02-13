@@ -1,22 +1,20 @@
-module ALU(input wire [3:0] a, b,
-           input wire [2:0] f,
-           output reg [3:0] y);
+//Tester ALU del procesador
+module ALU(input [2:0] f, input [3:0] a, b, output carry, zero, output [3:0] s);
 
-    always @ (a or b or f) begin
-        
+    reg [4:0] control; //variable que nos ayudara a realizar tanto las operaciones como verificar el estado de zero y carry
+
+    always @ (a, b, f)
         case(f)
-            3'b000: y = (a & b); //AND
-            3'b001: y = (a | b); //OR
-            3'b010: y = (a + b); //Suma
-            3'b100: y = (a & ~b); //AND, con NOT B
-            3'b101: y = (a | ~b); //OR, con NOT B
-            3'b110: y = (a - b); //Resta
-            3'b111: y = (a < b) ? 1:0; //Comparacion entre A y B
-            default: y = 3'b0; //Valor por defecto por si la 
-                               //opción no se encuentra en la ALU
+            3'b000: control = a; //out, jumps y st
+            3'b001: control = a - b; //CMPI y CMPM
+            3'b010: control = b; //LIT, in y ld
+            3'b011: control = a + b; //ADDI y ADDM
+            3'b100: control = {1'b0, ~(a & b)}; //NANDI y NANDM
+            default: control = 5'b10101;//valor por defecto de controll si la instruccion no se encuentra
         endcase
 
-    end
-
+    assign s = control[3:0];//salida de la ALU despues de operar
+    assign carry = control[4]; //Bit si existe overflow en la operación
+    assign zero = ~(control[3] | control[2] | control[1] | control[0]); //Bit que se enciende cuando la salida S es igual a 0
 
 endmodule
